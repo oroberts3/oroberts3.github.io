@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>oroberts3.github.io</title>
+<style>
+:root{--paper:#F3F6F7;--surface:#FFFFFF;--ink:#1B2A31;--muted:#566870;--line:#D3DCE0;--accent:#2C5A86;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--paper:#10171B;--surface:#172126;--ink:#E2E9EC;--muted:#97A8AF;--line:#2B3940;--accent:#86B0D8;color-scheme:dark}}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:40px 20px}
+h1{font:600 2rem/1.2 Georgia,"Times New Roman",serif;margin:0 0 4px}
+p{color:var(--muted);margin:0 0 24px}
+ul{list-style:none;padding:0;margin:0;border:1px solid var(--line);background:var(--surface)}
+li{border-top:1px solid var(--line)}li:first-child{border-top:0}
+a{display:block;padding:12px 16px;color:var(--accent);text-decoration:none;font-weight:600}
+a:hover{text-decoration:underline}
+a span{display:block;color:var(--muted);font-weight:400;font-size:.88rem}
+</style>
+</head>
+<body>
+<main>
+<h1>oroberts3.github.io</h1>
+<p id="status">Pages on this site.</p>
+<ul id="pages"><li><a href="/insurance/">Insurance<span>/insurance/</span></a></li><li><a href="/drills/">Drills<span>/drills/</span></a></li></ul>
+</main>
+<script>
+// Lists every repo with GitHub Pages turned on, so new project sites show up without editing this file.
+(function(){
+  fetch("https://api.github.com/users/oroberts3/repos?per_page=100").then(function(r){if(!r.ok)throw r.status;return r.json();}).then(function(repos){
+    var pages=repos.filter(function(r){return r.has_pages&&r.name.toLowerCase()!=="oroberts3.github.io";}).sort(function(a,b){return a.name.localeCompare(b.name);});
+    if(!pages.length)return;
+    var ul=document.getElementById("pages");ul.innerHTML="";
+    pages.forEach(function(r){
+      var li=document.createElement("li"),a=document.createElement("a");a.href="/"+r.name+"/";
+      var n=r.name.replace(/[-_]/g," ");a.textContent=n.charAt(0).toUpperCase()+n.slice(1);
+      var sp=document.createElement("span");sp.textContent=(r.description?r.description+" · ":"")+"/"+r.name+"/";a.appendChild(sp);li.appendChild(a);ul.appendChild(li);
+    });
+  }).catch(function(){document.getElementById("status").textContent="Pages on this site (couldn’t load the full list from GitHub right now).";});
+})();
+</script>
+</body>
+</html>
